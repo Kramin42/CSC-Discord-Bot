@@ -11,12 +11,6 @@ TOKEN = os.getenv('TOKEN')
 
 tealist = ['Earl Grey','English breakfast tea','lapsang souchong','Assam','Russian Caravan','chai','sencha','Darjeeling','oolong tea','Jasmine tea','Moroccan mint','chamomile']
 
-with open('belair', 'r') as f:
-    belair=f.read()
-
-with open('shades', 'r') as f:
-    shades=f.read()
-
 with open('thrones', 'r') as f:
     thrones=f.read()
 
@@ -80,8 +74,8 @@ class Markov(object):
 			gen_words.append(next_word)
 		return ' '.join(gen_words)
 
-belairmarkov = Markov(belair, chain_size=2)
-shadesmarkov = Markov(shades, chain_size=3)
+#belairmarkov = Markov(belair, chain_size=2)
+#shadesmarkov = Markov(shades, chain_size=3)
 thronesmarkov = Markov(thrones, chain_size=3)
 
 @client.event
@@ -111,6 +105,15 @@ def on_message(message):
                 yield from client.edit_message(tmp, ':D\\\\-<')
                 yield from client.edit_message(tmp, ':D|-<')
         
+        if cmd=='glasses':
+            # ( ••)    ( ••)>⌐■-■    (⌐■_■)
+            tmp = yield from client.send_message(chan, '( ••)')
+            yield from asyncio.sleep(1)
+            yield from client.edit_message(tmp, '( ••)>⌐■-■')
+            yield from asyncio.sleep(1)
+            yield from client.edit_message(tmp, '(⌐■_■)')
+            
+        
         if cmd=='beer' and len(args)>0:
             yield from client.send_message(chan, '_slides a beer to %s, courtesy of %s._' % (' '.join(args), message.author.display_name))
         
@@ -126,23 +129,23 @@ def on_message(message):
         if cmd=='google' and len(args)>0:
             yield from client.send_message(chan, 'http://www.google.com/search?q=%s' % '+'.join(args))
         
-        if cmd=='belair':
-            length = random.randrange(5,25)
-            if len(args)>0:
-                try:
-                    length = int(args[0])
-                except:
-                    print('invalid length')
-            yield from client.send_message(chan, belairmarkov.generate_markov_text(length))
+        # if cmd=='belair':
+        #     length = random.randrange(5,25)
+        #     if len(args)>0:
+        #         try:
+        #             length = int(args[0])
+        #         except:
+        #             print('invalid length')
+        #     yield from client.send_message(chan, belairmarkov.generate_markov_text(length))
         
-        if cmd=='shades':
-            length = random.randrange(20,50)
-            if len(args)>0:
-                try:
-                    length = int(args[0])
-                except:
-                    print('invalid length')
-            yield from client.send_message(chan, shadesmarkov.generate_markov_text(length))
+        # if cmd=='shades':
+        #     length = random.randrange(20,50)
+        #     if len(args)>0:
+        #         try:
+        #             length = int(args[0])
+        #         except:
+        #             print('invalid length')
+        #     yield from client.send_message(chan, shadesmarkov.generate_markov_text(length))
         
         if cmd=='thrones':
             length = random.randrange(20,100)

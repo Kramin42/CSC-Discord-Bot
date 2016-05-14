@@ -7,6 +7,7 @@ client = discord.Client()
 
 EMAIL = os.getenv('EMAIL')
 PASSWORD = os.getenv('PASSWORD')
+TOKEN = os.getenv('TOKEN')
 
 tealist = ['Earl Grey','English breakfast tea','lapsang souchong','Assam','Russian Caravan','chai','sencha','Darjeeling','oolong tea','Jasmine tea','Moroccan mint','chamomile']
 
@@ -55,4 +56,4 @@ def on_message(message):
         
     
 
-client.run(EMAIL, PASSWORD)
+client.run(TOKEN)

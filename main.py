@@ -208,6 +208,24 @@ def on_message(message):
             yield from client.edit_message(tmp, '( ••)>⌐■-■')
             yield from asyncio.sleep(1)
             yield from client.edit_message(tmp, '(⌐■_■)')
+        
+        if cmd=='deal':
+            glasses ='    ⌐■-■    '
+            glasson ='   (⌐■_■)   '
+            dealwith='deal with it'
+            lines = ['            ',\
+                     '            ',\
+                     '            ',\
+                     '    ( ••)   ']
+            tmp = yield from client.send_message(chan, '```%s```' % '\n'.join(lines))
+            yield from asyncio.sleep(1)
+            yield from client.edit_message(tmp, '```%s```' % '\n'.join([glasses]+lines[1:]))
+            yield from asyncio.sleep(1)
+            yield from client.edit_message(tmp, '```%s```' % '\n'.join(lines[:1]+[glasses]+lines[2:]))
+            yield from asyncio.sleep(1)
+            yield from client.edit_message(tmp, '```%s```' % '\n'.join(lines[:2]+[glasses]+lines[3:]))
+            yield from asyncio.sleep(1)
+            yield from client.edit_message(tmp, '```%s```' % '\n'.join(lines[:1]+[dealwith]+lines[2:3]+[glasson]))
             
         
         if cmd=='beer' and len(args)>0:
@@ -224,6 +242,18 @@ def on_message(message):
         
         if cmd=='google' and len(args)>0:
             yield from client.send_message(chan, 'http://www.google.com/search?q=%s' % '+'.join(args))
+        
+        if cmd=='marquee' and len(args)>0:
+            display = '                    '
+            tmp = yield from client.send_message(chan, '```%s```' % display)
+            text = ' '.join(args)+display
+            for char in text:
+                display = display[1:]+char
+                yield from client.edit_message(tmp, '```%s```' % display)
+            yield from asyncio.sleep(2)
+            yield from client.delete_message(tmp)
+                
+            
         
         # if cmd=='belair':
         #     length = random.randrange(5,25)
@@ -263,7 +293,7 @@ def on_message(message):
                     print('invalid length')
             # ENDOFLINEINDICATOR
             generated = markov.generate_markov_text(length)
-            generated.replace('ENDOFLINEINDICATOR','\n')
+            generated = generated.replace('ENDOFLINEINDICATOR','\n')
             yield from client.send_message(chan, generated)
         
         

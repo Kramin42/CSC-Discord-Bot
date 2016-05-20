@@ -2,6 +2,7 @@ import discord
 import asyncio
 import os
 import random
+import lispy
 
 client = discord.Client()
 
@@ -168,7 +169,7 @@ class DynamicMarkov(object):
 #belairmarkov = Markov(belair, chain_size=2)
 #shadesmarkov = Markov(shades, chain_size=3)
 thronesmarkov = Markov(thrones, chain_size=3)
-markov = DynamicMarkov('markov', chain_size=3)
+markov = DynamicMarkov('markov', chain_size=2)
 
 @client.event
 @asyncio.coroutine
@@ -193,6 +194,9 @@ def on_message(message):
         args = [] if len(args)==1 else args[1:]
         chan = message.channel
         
+        if cmd=='lisp':
+            yield from client.send_message(chan, lispy.rep(' '.join(args)))
+        
         if cmd=='dance':
             tmp = yield from client.send_message(chan, ':D|-<')
             for i in range(2):
@@ -200,6 +204,9 @@ def on_message(message):
                 yield from client.edit_message(tmp, ':D|-<')
                 yield from client.edit_message(tmp, ':D\\\\-<')
                 yield from client.edit_message(tmp, ':D|-<')
+        
+        if cmd=='echo':
+            yield from client.send_message(chan, ' '.join(args))
         
         if cmd=='glasses':
             # ( ••)    ( ••)>⌐■-■    (⌐■_■)
@@ -285,7 +292,7 @@ def on_message(message):
             yield from client.send_message(chan, generated)
         
         if cmd=='markov':
-            length = random.randrange(5,25)
+            length = random.randrange(10,40)
             if len(args)>0:
                 try:
                     length = int(args[0])
